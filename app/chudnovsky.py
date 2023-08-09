@@ -1,7 +1,7 @@
 import gmpy2
 from math import pow
 from enum import Enum
-from gmpy2 import mpz, mpfr, fac
+from gmpy2 import mpz, fac
 
 gmpy2.get_context().precision = 200
 
@@ -37,7 +37,7 @@ def x_q(step: int):
     return a
 
 
-def division(steps: int = 2):
+def division(steps: int):
     for step in range(steps):
         print(f"step: {step}")
         result = (m_q(step) * l_q(step)) / x_q(step)
@@ -51,9 +51,9 @@ def summation(step: int):
     return result
 
 
-def pi(step: int):
-    return Constants.D.value / summation(step)
+def pi(step: int = 4):
+    return f"{Constants.D.value / summation(step):.49Df}"
 
 
-print(pi(3))
+print(pi())
 print(pi_check)
