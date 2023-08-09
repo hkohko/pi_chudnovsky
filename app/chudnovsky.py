@@ -1,9 +1,8 @@
 import gmpy2
-from math import pow
 from enum import Enum
 from gmpy2 import mpz, fac
 
-gmpy2.get_context().precision = 200
+gmpy2.get_context().precision = 1000
 
 pi_check = "3.1415926535897932384626433832795028841971693993751"
 
@@ -18,9 +17,9 @@ class Constants(Enum):
 def m_q(step: int):
     nom = fac(6 * mpz(step))
     b = fac(3 * mpz(step))
-    c = pow(fac(mpz(step)), 3)
+    c = fac(mpz(step)) ** 3
     denom = b * c
-    result = nom / denom
+    result = nom // denom
     print(f"m_q: {result}")
     return result
 
@@ -32,7 +31,7 @@ def l_q(step: int):
 
 
 def x_q(step: int):
-    a = pow(Constants.C.value, step)
+    a = Constants.C.value ** step
     print(f"x_q: {a}")
     return a
 
