@@ -10,14 +10,17 @@ def gmp_prec(n: int):
     n = n + 5
     return int(ceil(n * gmpy2.log(10) / gmpy2.log(2))) + 1
 
+
 def set_prec(n):
     gmpy2.get_context().precision = gmp_prec(n)
+
 
 class Constants(Enum):
     A = mpz(13591409)
     B = mpz(545140134)
     C = mpz(-262537412640768000)
     D = mpz(426880) * gmpy2.sqrt(10005)
+
 
 def m_q(step: int):
     nom = fac(6 * mpz(step))
