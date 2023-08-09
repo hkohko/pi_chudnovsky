@@ -3,7 +3,7 @@ from math import ceil
 from enum import Enum
 from gmpy2 import mpz, fac
 from time import perf_counter
-gmpy2.set_context(gmpy2.context())
+from tqdm import tqdm
 
 
 def gmp_prec(n: int):
@@ -38,7 +38,7 @@ def division(steps: int):
 
 def summation(step: int):
     result = 0
-    for i in division(step):
+    for i in tqdm(division(step)):
         result = result + i
     return result
 
@@ -49,14 +49,20 @@ def pi(digit: int, step: int = 4):
 
 
 if __name__ == "__main__":
-    n = int(input("Number of digits : "))
-    start = perf_counter()
-    gmpy2.get_context().precision = gmp_prec(n)
-    class Constants(Enum):
-        A = mpz(13591409)
-        B = mpz(545140134)
-        C = mpz(-262537412640768000)
-        D = mpz(426880) * gmpy2.sqrt(10005)
-    end = perf_counter()
-    print(f"{end - start:.2f}s")
-    print(pi(n, ceil(n / 14)))
+    while True:
+        n = int(input("Number of digits : "))
+        start = perf_counter()
+        if gmp_prec(n) < int(gmpy2.get_max_precision()):
+            gmpy2.get_context().precision = gmp_prec(n)
+
+            class Constants(Enum):
+                A = mpz(13591409)
+                B = mpz(545140134)
+                C = mpz(-262537412640768000)
+                D = mpz(426880) * gmpy2.sqrt(10005)
+
+            print(pi(n, ceil(n / 14))[-10:])
+            end = perf_counter()
+            print(f"{end - start:.2f}s")
+        else:
+            print("Exceeded max precision")
