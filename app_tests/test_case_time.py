@@ -1,24 +1,32 @@
 import app.my_chudnovsky as pi
+from math import ceil
 from time import perf_counter
 from gmpy2 import mpz
 from tqdm import tqdm
 
 def modules():
-    yield from (pi.m_q, pi.l_q, pi.x_q, pi.division, pi.summation, pi.pi)
+    yield from (pi.m_q, pi.l_q, pi.x_q, pi.division)
 
 
-def test_modules(func: mpz, code: int):
-    name_module = {0: "m_q", 1: "l_q", 2: "x_q", 3: "division", 4: "summation", 5: "pi"}
-    n = 10000
-    pi.set_prec(n)
+def test_terms_module(func: mpz, code: int, digits: int):
+    name_module = {0: "m_q", 1: "l_q", 2: "x_q", 3: "division"}
+    n = ceil(digits / 14)
+    pi.set_prec(digits)
     start = perf_counter()
     for i in tqdm(range(n)):
         func(i)
     end = perf_counter()
-    result.append(f"{name_module.get(code)}: {end - start:.2f}s")
+    result.append(end - start)
 
 if __name__ == "__main__":
     result = []
+    digits = 1000
     for code, module in enumerate(modules()):
-        test_modules(module, code)
-    print(result)
+        test_terms_module(module, code, digits)
+
+    def calibrate_tqdm_overhead(x: float):
+        overhead = 80e-9
+        return x - overhead
+    
+    compensated_result = map(calibrate_tqdm_overhead, result)
+    print(list(compensated_result))

@@ -29,7 +29,7 @@ class Constants(Enum):
     D = mpz(426880) * gmpy2.sqrt(10005)
 
 
-def m_q(step: int):
+def m_q(step: int) -> mpz:
     nom = fac(6 * mpz(step))
     b = fac(3 * mpz(step))
     c = pow(fac(mpz(step)), 3)
@@ -38,23 +38,23 @@ def m_q(step: int):
     return result
 
 
-def l_q(step: int):
+def l_q(step: int) -> mpz:
     a = Constants.B.value * step
     return a + Constants.A.value
 
 
-def x_q(step: int):
+def x_q(step: int) -> mpz:
     a = pow(Constants.C.value, step)
     return a
 
 
-def division(steps: int):
+def division(steps: int) -> gmpy2.mpfr:
     for step in range(steps):
         result = (m_q(step) * l_q(step)) / x_q(step)
         yield result
 
 
-def summation(step: int):
+def summation(step: int) -> gmpy2.mpfr:
     result = 0
     for i in tqdm(division(step)):
         result = result + i
@@ -72,7 +72,7 @@ if __name__ == "__main__":
         if gmp_prec(n) < int(gmpy2.get_max_precision()):
             gmpy2.get_context().precision = gmp_prec(n)
             start = perf_counter()
-
+            print(f"expected iteration: {ceil(n / 14)}")
             class Constants(Enum):
                 A = mpz(13591409)
                 B = mpz(545140134)
