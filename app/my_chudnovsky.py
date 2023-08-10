@@ -5,9 +5,16 @@ from gmpy2 import mpz, fac
 from time import perf_counter
 from tqdm import tqdm
 
+"""
+all these prime swing factorials are slower than gmpy2.fac?
+"""
+# from primeswing_factorial.PrimeSwingFactorialGmpy import primeswing_factorial as fac
+# from primeswing_factorial.PrimeSwingFactorialPy import primeswing_factorial as fac
+# from primeswing_factorial.Andreas_prime_swing import divide_swing_and_conquer as fac
+
 
 def gmp_prec(n: int):
-    n = n + 5
+    n = n + 5  # use higher than requrested precision
     return int(ceil(n * gmpy2.log(10) / gmpy2.log(2))) + 1
 
 
@@ -62,9 +69,9 @@ def pi(digit: int, step: int = 4):
 if __name__ == "__main__":
     while True:
         n = int(input("Number of digits : "))
-        start = perf_counter()
         if gmp_prec(n) < int(gmpy2.get_max_precision()):
             gmpy2.get_context().precision = gmp_prec(n)
+            start = perf_counter()
 
             class Constants(Enum):
                 A = mpz(13591409)
