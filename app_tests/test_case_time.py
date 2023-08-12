@@ -1,6 +1,7 @@
 from app.my_chudnovsky import Pi
 from math import ceil
 from time import perf_counter
+from tqdm import tqdm
 
 
 def modules_term():
@@ -11,16 +12,17 @@ def calc():
     yield from (pi.division, pi.summation, pi.generate)
 
 
-def test(digits: int):
+def test():
     for module in modules_term():
         start = perf_counter()
-        module(digits)
+        for iteration in tqdm(range(pi.step)):
+            module(iteration)
         end = perf_counter()
         result.append(end - start)
 
     for module in calc():
         start = perf_counter()
-        module(True, digits)
+        module()
         end = perf_counter()
         result.append(end - start)
 
@@ -30,7 +32,7 @@ if __name__ == "__main__":
     digits = int(input("digits: "))
     pi = Pi(digits)
 
-    test(digits)
+    test()
 
     def calibrate_tqdm_overhead(x: float):
         overhead = 80e-9 * ceil(digits / 14)

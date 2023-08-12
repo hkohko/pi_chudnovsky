@@ -45,26 +45,18 @@ class Pi:
         a = pow(self.C, step)
         return a
 
-    def division(self, test=False, n=None) -> gmpy2.mpfr:
-        n = self.step
-        if test:
-            n = n
-        for step in range(n):
+    def division(self) -> gmpy2.mpfr:
+        for step in range(self.step):
             result = (self.m_q(step) * self.l_q(step)) / self.x_q(step)
             yield result
 
-    def summation(self, test=False, n=None) -> gmpy2.mpfr:
+    def summation(self) -> gmpy2.mpfr:
         result = 0
-        n = self.division()
-        if test:
-            n = n
-        for i in tqdm(n):
+        for i in tqdm(self.division()):
             result = result + i
         return result
 
-    def generate(self, test=False, n=None):
-        if test:
-            return self.D / self.summation(n)
+    def generate(self):
         return self.D / self.summation()
 
     def __repr__(self):
