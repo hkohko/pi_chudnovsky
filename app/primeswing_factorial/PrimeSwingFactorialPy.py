@@ -5,6 +5,7 @@
 # Also http://www.luschny.de/math/factorial/SwingFactorialPy.html
 # http://luschny.de/math/factorial/FastFactorialFunctions.htm
 
+from app.sieve.sieve_np import primes as np_prime
 from bisect import bisect_left
 from math import log, isqrt
 
@@ -185,7 +186,7 @@ def primeswing_factorial(n: int) -> int:
         #     bits -= N & 1
         #     N >>= 1
 
-        primes: list[int] = Primes(n)
+        primes: list[int] = np_prime(n)
         return odd_factorial(n, primes) << bits
 
     return eval(n)
@@ -221,7 +222,7 @@ if __name__ == "__main__":
             print(f" elapsed:{elapsed:1.3f}s, quot:{q:1.1f}")
             n *= 4
 
-    test(1000)
+    # test(1000)
     bench(6)
 
 """
